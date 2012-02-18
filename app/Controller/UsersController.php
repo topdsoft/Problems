@@ -7,6 +7,10 @@ App::uses('AppController', 'Controller');
  */
 class UsersController extends AppController {
 
+	public function beforeFilter() {
+		$this->Auth->allow('add','register','confirm');
+		parent::beforeFilter();
+	}
 
 /**
  * index method
@@ -93,4 +97,39 @@ class UsersController extends AppController {
 		$this->Session->setFlash(__('User was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
+
+
+	public function login() {
+		if ($this->request->is('post')) {
+			if ($this->Auth->login()) {
+				return $this->redirect($this->Auth->redirect());
+			} else {
+				$this->Session->setFlash(__('Username or password is incorrect'), 'default', array(), 'auth');
+			}
+		}
+	}
+	
+	public function logout() {
+		$this->Cookie->delete('Auth.Username');
+		$this->redirect($this->Auth->logout());
+	}
+
+	function register() {
+		if ($this->request->is('post')) {
+			$this->User->create();
+			//set confirmation code
+			$this->request->data['User']['hash']=md5(uniqid(rand(),true));
+			if ($this->User->save($this->request->data)) {
+				$this->Session->setFlash(__('An email has been sent with a link to confirm your account.', true));
+				//send email
+				$this->_sendNewUserMail($this->User->getInsertId());
+				$this->redirect(array('controller'=>'pages','action' => 'home'));
+			} else {
+				$this->Session->setFlash(__('Your registration could not be completed. Please, try again.', true));
+				$this->request->data['User']['terms']=false;
+			}
+		}
+	}
+
+
 }

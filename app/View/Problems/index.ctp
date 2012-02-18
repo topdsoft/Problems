@@ -1,39 +1,29 @@
 <div class="problems index">
-	<h2><?php echo __('Problems');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('description');?></th>
 			<th><?php echo $this->Paginator->sort('category_id');?></th>
 			<th><?php echo $this->Paginator->sort('user_id');?></th>
 			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('solved');?></th>
 			<th><?php echo $this->Paginator->sort('rank');?></th>
-			<th><?php echo $this->Paginator->sort('notify');?></th>
-			<th class="actions"><?php echo __('Actions');?></th>
+			<th class="actions"></th>
 	</tr>
 	<?php
 	$i = 0;
 	foreach ($problems as $problem): ?>
 	<tr>
-		<td><?php echo h($problem['Problem']['id']); ?>&nbsp;</td>
 		<td><?php echo h($problem['Problem']['name']); ?>&nbsp;</td>
-		<td><?php echo h($problem['Problem']['description']); ?>&nbsp;</td>
 		<td>
 			<?php echo $this->Html->link($problem['Category']['name'], array('controller' => 'categories', 'action' => 'view', $problem['Category']['id'])); ?>
 		</td>
-		<td>
-			<?php echo $this->Html->link($problem['User']['username'], array('controller' => 'users', 'action' => 'view', $problem['User']['id'])); ?>
-		</td>
+		<td><?php echo h($problem['User']['username']); ?>&nbsp;</td>
 		<td><?php echo h($problem['Problem']['created']); ?>&nbsp;</td>
-		<td><?php echo h($problem['Problem']['solved']); ?>&nbsp;</td>
 		<td><?php echo h($problem['Problem']['rank']); ?>&nbsp;</td>
-		<td><?php echo h($problem['Problem']['notify']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $problem['Problem']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $problem['Problem']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $problem['Problem']['id']), null, __('Are you sure you want to delete # %s?', $problem['Problem']['id'])); ?>
+			<?php if($problem['Problem']['user_id']==$uid)echo $this->Html->link(__('Edit'), array('action' => 'edit', $problem['Problem']['id'])); ?>
+			<?php if($problem['Problem']['user_id']==$uid)echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $problem['Problem']['id']), null, 
+			__('Are you sure you want to delete your problem: %s?', $problem['Problem']['name'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

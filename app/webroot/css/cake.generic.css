@@ -22,7 +22,7 @@
 
 /** General Style Info **/
 body {
-	background: #003d4c;
+	background: #dee0bf;
 	color: #fff;
 	font-family:'lucida grande',verdana,helvetica,arial,sans-serif;
 	font-size:90%;
@@ -45,9 +45,6 @@ h1, h2, h3, h4 {
 	margin-bottom:0.5em;
 }
 h1 {
-	background:#fff;
-	color: #003d4c;
-	font-size: 100%;
 }
 h2 {
 	background:#fff;
@@ -80,10 +77,6 @@ p {
 	padding: 10px 20px;
 }
 #header h1 {
-	line-height:20px;
-	background: #003d4c url('../img/cake.icon.png') no-repeat left;
-	color: #fff;
-	padding: 0px 30px;
 }
 #header h1 a {
 	color: #fff;
@@ -102,21 +95,70 @@ p {
 	color: #333;
 	padding: 10px 20px 40px 20px;
 	overflow: auto;
+	width: 96%;
+/*	text-align: center;*/
+	margin-left:auto;
+	margin-right:auto;
+	-moz-box-shadow: 2px 2px 2px #777;
+	-webkit-box-shadow: 2px 2px 2px #777;
+	-box-shadow: 2px 2px 2px #777;
 }
 #footer {
 	clear: both;
 	padding: 6px 10px;
 	text-align: right;
 }
+#menu {
+	clear:both;
+	margin-top: 16px;
+}
+#menu ul li {
+	display:block;
+	float:left;
+	background: #fff;
+	color: #777;
+	font-size:160%;
+	padding: 2px 10px;
+	margin: 0px 6px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+}
+#menu a {
+	color: #777;
+	font-weight:normal;
+	text-decoration: none;
+}
+.headblock{
+	padding: 5px;
+	margin-right: 10px;
+	background: #333;
+	color: #eee;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	text-align:center;
+	-moz-box-shadow: 2px 2px 7px #444;
+	-webkit-box-shadow: 2px 2px 7px #444;
+	-box-shadow: 2px 2px 7px #444;
+}
 
+.headblock a {
+	color: #eee;
+}
+
+.score {
+	font-size:300%;
+	display:block;
+	font-weight:bold;
+}
 /** containers **/
 div.form,
 div.index,
 div.view {
-	float:right;
+/*	float:right;
 	width:76%;
 	border-left:1px solid #666;
-	padding:10px 2%;
+	padding:10px 2%;*/
 }
 div.actions {
 	float:left;

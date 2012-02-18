@@ -7,6 +7,11 @@ App::uses('AppModel', 'Model');
  * @property Solution $Solution
  */
 class User extends AppModel {
+
+	function beforeSave($options = array()) {
+		if(isset($this->data['User']['password']))$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
+		return true;
+	}
 /**
  * Display field
  *

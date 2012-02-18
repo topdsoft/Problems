@@ -1,14 +1,14 @@
 <div class="problems view">
-<h2><?php  echo __('Problem');?></h2>
+<h2><?php  echo h($problem['Problem']['name']);?></h2>
+	<small> 
+		<?php echo h($problem['Problem']['created']); ?>
+		 by 
+		<?php echo h($problem['User']['username']); ?>
+	</small>
 	<dl>
 		<dt><?php echo __('Id'); ?></dt>
 		<dd>
 			<?php echo h($problem['Problem']['id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Name'); ?></dt>
-		<dd>
-			<?php echo h($problem['Problem']['name']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Description'); ?></dt>

@@ -16,6 +16,7 @@ class ProblemsController extends AppController {
 	public function index() {
 		$this->Problem->recursive = 0;
 		$this->set('problems', $this->paginate());
+		$this->set('uid',$this->Auth->user('id'));
 	}
 
 /**
@@ -40,14 +41,19 @@ class ProblemsController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Problem->create();
+			$this->request->data['Problem']['user_id']=$this->Auth->user('id');
 			if ($this->Problem->save($this->request->data)) {
 				$this->Session->setFlash(__('The problem has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The problem could not be saved. Please, try again.'));
 			}
+		} else {
+			//defaults
+			$this->request->data['Problem']['category_id']=0;
 		}
 		$categories = $this->Problem->Category->find('list');
+		$categories[0]='(none)';
 		$users = $this->Problem->User->find('list');
 		$this->set(compact('categories', 'users'));
 	}
