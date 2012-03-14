@@ -12,7 +12,9 @@
 	$i = 0;
 	foreach ($problems as $problem): ?>
 	<tr>
-		<td><?php echo h($problem['Problem']['name']); ?>&nbsp;</td>
+		<td>
+			<?php echo $this->Html->link($problem['Problem']['name'], array('action'=>'view',$problem['Problem']['id'])); ?>&nbsp;
+		</td>
 		<td>
 			<?php echo $this->Html->link($problem['Category']['name'], array('controller' => 'categories', 'action' => 'view', $problem['Category']['id'])); ?>
 		</td>

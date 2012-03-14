@@ -151,6 +151,15 @@ p {
 	display:block;
 	font-weight:bold;
 }
+.probdesc {
+	border: 1pt solid #ccc;
+	margin: 5pt 2pt;
+	padding: 5pt;
+	display:block;
+}
+.probsol {
+	margin: 5pt 10pt;
+}
 /** containers **/
 div.form,
 div.index,

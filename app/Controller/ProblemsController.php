@@ -7,6 +7,10 @@ App::uses('AppController', 'Controller');
  */
 class ProblemsController extends AppController {
 
+	public function beforeFilter() {
+		$this->Auth->allow('index','view');
+		parent::beforeFilter();
+	}
 
 /**
  * index method
@@ -26,11 +30,24 @@ class ProblemsController extends AppController {
  * @return void
  */
 	public function view($id = null) {
+		$this->Problem->recursive = 2;
 		$this->Problem->id = $id;
 		if (!$this->Problem->exists()) {
 			throw new NotFoundException(__('Invalid problem'));
 		}
 		$this->set('problem', $this->Problem->read(null, $id));
+		if ($this->request->is('post')) {
+			$this->Problem->Solution->create();
+			$this->request->data['Solution']['user_id']=$this->Auth->user('id');
+			$this->request->data['Solution']['problem_id']=$id;
+//debug($this->request->data);exit;
+			if ($this->Problem->Solution->save($this->request->data)) {
+				$this->Session->setFlash(__('Your solution has been saved'));
+				$this->redirect(array('action' => 'index'));
+			} else {
+				$this->Session->setFlash(__('Your solution could not be saved. Please, try again.'));
+			}
+		}
 	}
 
 /**

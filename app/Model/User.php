@@ -12,6 +12,13 @@ class User extends AppModel {
 		if(isset($this->data['User']['password']))$this->data['User']['password'] = AuthComponent::password($this->data['User']['password']);
 		return true;
 	}
+
+	public $virtualFields=array(
+		'solved'=>'select count(*) from solutions as Solution where Solution.user_id=User.id and Solution.chosen',
+		'solutions'=>'select count(*) from solutions as Solution where Solution.user_id=User.id',
+		'problems'=>'select count(*) from problems as Problem where Problem.user_id=User.id'
+	);
+
 /**
  * Display field
  *

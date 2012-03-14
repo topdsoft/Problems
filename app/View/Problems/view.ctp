@@ -1,104 +1,88 @@
 <div class="problems view">
+<?php echo $this->Form->create('Problem');?>
+<?php echo $this->Html->script(array('jquery-1.6.4.min'));?>
 <h2><?php  echo h($problem['Problem']['name']);?></h2>
 	<small> 
 		<?php echo h($problem['Problem']['created']); ?>
 		 by 
-		<?php echo h($problem['User']['username']); ?>
-	</small>
-	<dl>
-		<dt><?php echo __('Id'); ?></dt>
-		<dd>
-			<?php echo h($problem['Problem']['id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Description'); ?></dt>
-		<dd>
-			<?php echo h($problem['Problem']['description']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Category'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($problem['Category']['name'], array('controller' => 'categories', 'action' => 'view', $problem['Category']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('User'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($problem['User']['username'], array('controller' => 'users', 'action' => 'view', $problem['User']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($problem['Problem']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Solved'); ?></dt>
-		<dd>
-			<?php echo h($problem['Problem']['solved']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Rank'); ?></dt>
-		<dd>
-			<?php echo h($problem['Problem']['rank']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Notify'); ?></dt>
-		<dd>
-			<?php echo h($problem['Problem']['notify']); ?>
-			&nbsp;
-		</dd>
-	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Problem'), array('action' => 'edit', $problem['Problem']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Problem'), array('action' => 'delete', $problem['Problem']['id']), null, __('Are you sure you want to delete # %s?', $problem['Problem']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Problems'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Problem'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Categories'), array('controller' => 'categories', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Category'), array('controller' => 'categories', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Solutions'), array('controller' => 'solutions', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Solution'), array('controller' => 'solutions', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Solutions');?></h3>
-	<?php if (!empty($problem['Solution'])):?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Description'); ?></th>
-		<th><?php echo __('Problem Id'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('User Id'); ?></th>
-		<th><?php echo __('Chosen'); ?></th>
-		<th class="actions"><?php echo __('Actions');?></th>
-	</tr>
+		<?php 
+			$userinfo="Member Since: ".$problem['User']['created']."\nProblems Submitted:".$problem['User']['problems'];
+			$userinfo.="\nSolutions Submitted:".$problem['User']['solutions']."\nSolutions:".$problem['User']['solved'];
+			echo '<span title="'.$userinfo.'">'.h($problem['User']['username']).'</span>'; 
+		?>
+	</small><br>
+	In Category:
+	<?php echo $this->Html->link($problem['Category']['name'], array('controller' => 'categories', 'action' => 'view', $problem['Category']['id'])); ?><br>
+	<?php if($problem['Problem']['solved']) echo "<strong>SOLVED:</stong> {$problem['Problem']['solved']} </strong><br>"; ?>
+	<span class="probdesc">
+	<?php echo nl2br($problem['Problem']['description']); ?>
+	</span>
+	<div id="enter">
 	<?php
-		$i = 0;
-		foreach ($problem['Solution'] as $solution): ?>
-		<tr>
-			<td><?php echo $solution['id'];?></td>
-			<td><?php echo $solution['description'];?></td>
-			<td><?php echo $solution['problem_id'];?></td>
-			<td><?php echo $solution['created'];?></td>
-			<td><?php echo $solution['user_id'];?></td>
-			<td><?php echo $solution['chosen'];?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'solutions', 'action' => 'view', $solution['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'solutions', 'action' => 'edit', $solution['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'solutions', 'action' => 'delete', $solution['id']), null, __('Are you sure you want to delete # %s?', $solution['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Solution'), array('controller' => 'solutions', 'action' => 'add'));?> </li>
-		</ul>
+		echo $this->Form->input('Solution.description',array('label'=>'Enter your solution here:','type'=>'textarea'));
+		echo $this->Form->end(__('Submit'));
+	?>
 	</div>
+	<?php //debug($problem['Solution']);
+		if(!empty($problem['Solution'])) {
+			//show submitted solutions
+			$i=0;
+			foreach($problem['Solution'] as $solution) {
+				//loop for all solutions
+				$i++; 
+				if($solution['chosen']) {
+					//chosen!
+					echo '<div class="probsol" style="border:dashed 2pt red; padding: 2px 5px;">';
+					echo "<h3>Chosen Solution</h3>";
+				} else {
+					//not chosen
+					echo '<div class="probsol">';
+					echo "<h3>Submitted Solution #$i</h3>";
+				}
+				echo '<small>';
+				echo h($solution['Problem']['created']).' by ';
+				$userinfo="Member Since: ".$solution['User']['created']."\nProblems Submitted:".$solution['User']['problems'];
+				$userinfo.="\nSolutions Submitted:".$solution['User']['solutions']."\nSolutions:".$solution['User']['solved'];
+				echo '<span title="'.$userinfo.'">'.h($solution['User']['username']).'</span>'; 
+				echo '</small><br>';
+				echo nl2br($solution['description']);
+				if(!$problem['Problem']['solved'] && $this->Session->read('Auth.User.id')==$problem['Problem']['user_id']) {
+					//show option to solve
+					echo '<br><br><span class="actions">';
+					echo $this->Html->link(__('Choose Solution #'.$i),array('controller'=>'solutions','action'=>'chooseSolution',$solution['id']),
+						array('title'=>'Click here to mark your problem as solved and choose this solution.'));
+					echo '</span><br><br>';
+				}//endif
+				echo '</div>';
+			}//end foreach
+		}//endif
+		if(!$problem['Problem']['solved']) {
+			//show options for submitting solutions
+			if($this->Session->read('Auth.User.username')) {
+				//user is logged in
+				echo '<br><span class="actions">';
+				echo $this->Html->link(__('Submit Solution'), 'javascript:showenter();');
+				echo '</span>';
+			} else {
+				//not logged in
+				echo 'To submit a solution for this problem ';
+				echo $this->Html->link('Register', array('controller'=>'users','action'=>'register'));
+				echo ' or ';
+				echo $this->Html->link('Login', array('controller'=>'users','action'=>'login'));
+			}
+		}//endif
+	?>
 </div>
+<script type='text/javascript'>
+//<!--
+$(function(){
+	//initially hide
+	$("#enter").hide();
+});
+function showenter() {
+	$("#enter").slideDown();
+	$(".actions").hide();
+	$("#SolutionDescription").focus();
+}
+//-->
+</script>
