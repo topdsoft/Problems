@@ -8,6 +8,11 @@ App::uses('AppController', 'Controller');
 class CategoriesController extends AppController {
 
 
+	public function beforeFilter() {
+		$this->Auth->allow('index','view');
+		parent::beforeFilter();
+	}
+
 /**
  * index method
  *
@@ -29,7 +34,10 @@ class CategoriesController extends AppController {
 		if (!$this->Category->exists()) {
 			throw new NotFoundException(__('Invalid category'));
 		}
-		$this->set('category', $this->Category->read(null, $id));
+		$this->set('catName',$this->Category->field('name'));
+		$this->set('problems',$this->paginate('Problem',array('Problem.category_id'=>$id)));
+		$this->set('uid',$this->Auth->user('id'));
+//		$this->set('category', $this->Category->read(null, $id));
 	}
 
 /**
