@@ -5,6 +5,7 @@
 			<th><?php echo $this->Paginator->sort('category_id');?></th>
 			<th><?php echo $this->Paginator->sort('user_id');?></th>
 			<th><?php echo $this->Paginator->sort('created');?></th>
+			<th><?php echo $this->Paginator->sort('solved');?></th>
 			<th><?php echo $this->Paginator->sort('rank');?></th>
 			<th class="actions"></th>
 	</tr>
@@ -20,6 +21,7 @@
 		</td>
 		<td><?php echo h($problem['User']['username']); ?>&nbsp;</td>
 		<td><?php echo h($problem['Problem']['created']); ?>&nbsp;</td>
+		<td><?php echo h($problem['Problem']['solved']); ?>&nbsp;</td>
 		<td><?php echo h($problem['Problem']['rank']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $problem['Problem']['id'])); ?>
