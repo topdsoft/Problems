@@ -14,6 +14,10 @@ class Problem extends AppModel {
  * @var string
  */
 	public $displayField = 'name';
+	
+	public $virtualFields=array(
+		'numSol'=>'select count(*) from solutions as Solution where Solution.problem_id=Problem.id'
+	);
 /**
  * Validation rules
  *

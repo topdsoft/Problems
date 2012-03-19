@@ -100,8 +100,10 @@ class UsersController extends AppController {
 
 
 	public function login() {
+//exit;
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
+//debug($this->Auth->redirect());debug($_SESSION);exit;
 				return $this->redirect($this->Auth->redirect());
 			} else {
 				$this->Session->setFlash(__('Username or password is incorrect'), 'default', array(), 'auth');
@@ -110,7 +112,12 @@ class UsersController extends AppController {
 	}
 	
 	public function logout() {
-		$this->Cookie->delete('Auth.Username');
+//		$this->Cookie->delete('Auth.Username');
+		$this->Auth->logout();
+//debug($_SESSION);
+//		$this->Session->delete('Auth');
+//debug($_SESSION);exit;
+		$this->redirect('/');
 		$this->redirect($this->Auth->logout());
 	}
 
