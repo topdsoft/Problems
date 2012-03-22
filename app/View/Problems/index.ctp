@@ -1,8 +1,28 @@
 <div class="problems index">
 	<?php 
-		
+//debug($this->params['named']);
+		if(isset($this->request->params['named']['all'])) {
+			$headline= 'Showing All Problems';
+		} else {
+			$headline='Unsolved Problems';
+		}
+		if(isset($this->request->params['named']['cat'])) {
+			$headline.=' in Category: ';
+			$headline.=$catname;
+		}
 	?>
-
+	<h2><?php echo $headline;?></h2>
+	<?php
+		if(isset($this->request->params['named']['all'])) {
+			echo $this->Html->link('Hide Solved Problems', array(
+				'controller'=>'problems'
+				));
+		} else {
+			echo $this->Html->link('Show Solved Problems', array(
+				'controller'=>'problems'
+				,'all'=>'1'));
+		}
+	?>
 
 	<table cellpadding="0" cellspacing="0">
 	<tr>
@@ -10,7 +30,7 @@
 			<th><?php echo $this->Paginator->sort('category_id');?></th>
 			<th><?php echo $this->Paginator->sort('user_id');?></th>
 			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('solved');?></th>
+			<th><?php if(isset($this->request->params['named']['all']))echo $this->Paginator->sort('solved');?></th>
 			<th><?php echo $this->Paginator->sort('numSol','Solutions');?></th>
 			<th><?php echo $this->Paginator->sort('rank');?></th>
 			<th class="actions"></th>
@@ -23,11 +43,11 @@
 			<?php echo $this->Html->link($problem['Problem']['name'], array('action'=>'view',$problem['Problem']['id'])); ?>&nbsp;
 		</td>
 		<td>
-			<?php echo $this->Html->link($problem['Category']['name'], array('controller' => 'categories', 'action' => 'view', $problem['Category']['id'])); ?>
+			<?php echo $this->Html->link($problem['Category']['name'], array('controller' => 'problems', 'action' => 'index', 'cat'=>$problem['Category']['id'])); ?>
 		</td>
 		<td><?php echo h($problem['User']['username']); ?>&nbsp;</td>
 		<td><?php echo h($problem['Problem']['created']); ?>&nbsp;</td>
-		<td><?php echo h($problem['Problem']['solved']); ?>&nbsp;</td>
+		<td><?php if(isset($this->request->params['named']['all']))echo h($problem['Problem']['solved']); ?>&nbsp;</td>
 		<td><?php echo h($problem['Problem']['numSol']); ?>&nbsp;</td>
 		<td><?php echo h($problem['Problem']['rank']); ?>&nbsp;</td>
 		<td class="actions">

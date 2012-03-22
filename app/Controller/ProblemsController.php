@@ -23,11 +23,18 @@ class ProblemsController extends AppController {
 		$conditions=array();
 		if(!isset($this->request->params['named']['all'])){
 			//hide solved problems
+			$conditions[]=array('solved'=>'null');
 		}//endif
 		if(isset($this->request->params['named']['cat'])){
 			//filter by category
+			$catname=$this->Problem->Category->field('name',array('Category.id'=>$this->request->params['named']['cat']));
+			if($catname){
+				//valid category
+				$conditions[]=array('Problem.category_id'=>$this->request->params['named']['cat']);
+				$this->set('catname',$catname);
+			} else unset($this->request->params['named']['cat']);
 		}
-		$this->set('problems', $this->paginate());
+		$this->set('problems', $this->paginate($conditions));
 		$this->set('uid',$this->Auth->user('id'));
 		
 //debug($this->request->params['named']);exit;
