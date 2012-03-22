@@ -19,8 +19,18 @@ class ProblemsController extends AppController {
  */
 	public function index() {
 		$this->Problem->recursive = 0;
+		//check params
+		$conditions=array();
+		if(!isset($this->request->params['named']['all'])){
+			//hide solved problems
+		}//endif
+		if(isset($this->request->params['named']['cat'])){
+			//filter by category
+		}
 		$this->set('problems', $this->paginate());
 		$this->set('uid',$this->Auth->user('id'));
+		
+//debug($this->request->params['named']);exit;
 	}
 
 /**
